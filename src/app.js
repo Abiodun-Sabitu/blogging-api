@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
-createHttpError = require('http-errors');
+const createHttpError = require('http-errors');
 const authRoutes = require('./routes/auth');
 const blogRoutes = require('./routes/blog');
 
@@ -16,22 +16,19 @@ dbConnect();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(morgan('combined'));
+app.use(morgan('dev'));
 
 // Routes
 app.get('/api/v1/', (req, res) => {
-  try {
-    res.status(200).json({ message: 'Welcome to the Blogging API' });
-  } catch (error) {
-    next(error);
-  }
-});
-app.use((req, res, next) => {
-  next(createHttpError(404, `this endpoint ${req.url} was not found`));
+  res.status(200).json({ message: 'Welcome to the Blogging API' });
 });
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/blogs', blogRoutes);
 
+// 404 handler for unmatched routes
+app.use((req, res, next) => {
+  next(createHttpError(404, `Looks like '${req.url}' isn’t a valid route. Please check the URL and try again.`));
+});
 // Error handler
 app.use(errorHandler);
 

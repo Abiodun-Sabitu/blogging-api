@@ -23,5 +23,5 @@ const morganStream = {
 
 module.exports = {
   logger,
-  morganMiddleware: morgan('dev', { stream: morganStream })
+  morganMiddleware: morgan('combined', { stream: morganStream })
 };
