@@ -27,7 +27,7 @@ app.use('/api/v1/blogs', blogRoutes);
 
 // 404 handler for unmatched routes
 app.use((req, res, next) => {
-  next(createHttpError(404, `Looks like '${req.url}' isn’t a valid route. Please check the URL and try again.`));
+  next(createHttpError(404, `Looks like '${req.url}' isn’t a valid route. Please check the URL and try again.`) );
 });
 // Error handler
 app.use(errorHandler);

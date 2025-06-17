@@ -1,5 +1,5 @@
 // Helper for pagination, filtering, searching, and ordering
-exports.buildQuery = (query) => {
+const buildQuery = (query) => {
   const filter = { state: 'published' };
   if (query.state) filter.state = query.state;
   if (query.author) filter.author = query.author;
@@ -8,7 +8,7 @@ exports.buildQuery = (query) => {
   return filter;
 };
 
-exports.buildSort = (query) => {
+const buildSort = (query) => {
   const sort = {};
   if (query.orderBy) {
     const fields = ['read_count', 'reading_time', 'createdAt'];
@@ -21,9 +21,15 @@ exports.buildSort = (query) => {
   return sort;
 };
 
-exports.getPagination = (query) => {
+const getPagination = (query) => {
   const page = parseInt(query.page) > 0 ? parseInt(query.page) : 1;
   const limit = parseInt(query.limit) > 0 ? parseInt(query.limit) : 20;
   const skip = (page - 1) * limit;
   return { page, limit, skip };
 };
+
+module.exports = {
+  buildQuery,
+  buildSort,
+  getPagination
+}

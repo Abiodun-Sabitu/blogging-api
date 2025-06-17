@@ -1,11 +1,15 @@
-const Blog = require('../model/blog');
-const User = require('../model/user');
-const createError = require('http-errors');
-const calculateReadingTime = require('../utils/readingTime');
-const { buildQuery, buildSort, getPagination } = require('../utils/queryHelpers');
+const Blog = require("../model/blog");
+const User = require("../model/user");
+const createError = require("http-errors");
+const calculateReadingTime = require("../utils/readingTime");
+const {
+  buildQuery,
+  buildSort,
+  getPagination,
+} = require("../utils/queryHelpers");
 
 // Get all published blogs (paginated, filterable, searchable, orderable)
-exports.getBlogs = async (req, res, next) => {
+const getBlogs = async (req, res, next) => {
   try {
     const filter = buildQuery(req.query);
     const sort = buildSort(req.query);
@@ -14,12 +18,12 @@ exports.getBlogs = async (req, res, next) => {
       .sort(sort)
       .skip(skip)
       .limit(limit)
-      .populate('author', '-password');
+      .populate("author", "-password");
     const total = await Blog.countDocuments(filter);
     res.json({
       page,
       total,
-      blogs
+      blogs,
     });
   } catch (err) {
     next(err);
@@ -27,10 +31,13 @@ exports.getBlogs = async (req, res, next) => {
 };
 
 // Get a single published blog (increments read_count, returns author info)
-exports.getBlog = async (req, res, next) => {
+const getBlog = async (req, res, next) => {
   try {
-    const blog = await Blog.findOne({ _id: req.params.id, state: 'published' }).populate('author', '-password');
-    if (!blog) return next(createError(404, 'Blog not found'));
+    const blog = await Blog.findOne({
+      _id: req.params.id,
+      state: "published",
+    }).populate("author", "-password");
+    if (!blog) return next(createError(404, "Blog not found"));
     blog.read_count += 1;
     await blog.save();
     res.json(blog);
@@ -40,10 +47,15 @@ exports.getBlog = async (req, res, next) => {
 };
 
 // Create a blog (draft, logged-in only)
-exports.createBlog = async (req, res, next) => {
+const createBlog = async (req, res, next) => {
   try {
     const { title, description, tags, body } = req.body;
-    if (!title || !body) return next(createError(400, 'Title and body are required'));
+    if (!title || !body)
+      return next(createError(400, "Title and body are required"));
+    const existingTitle = await Blog.findOne({title})
+    if (existingTitle){
+      return next(createError(409, "Title already exists, please use a different title."))
+    }
     const reading_time = calculateReadingTime(body);
     const blog = new Blog({
       title,
@@ -51,21 +63,27 @@ exports.createBlog = async (req, res, next) => {
       tags,
       body,
       author: req.user._id,
-      reading_time
+      reading_time,
     });
     await blog.save();
-    res.status(201).json(blog);
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      message: "Blog created successfully",
+      data:blog
+    });
   } catch (err) {
     next(err);
   }
 };
 
 // Update a blog (owner only)
-exports.updateBlog = async (req, res, next) => {
+const updateBlog = async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.params.id);
-    if (!blog) return next(createError(404, 'Blog not found'));
-    if (blog.author.toString() !== req.user._id.toString()) return next(createError(403, 'Forbidden'));
+    if (!blog)       return next(createError(404, "Sorry, we couldn't find the blog you want to update. It may have been deleted or never existed."));
+    if (blog.author.toString() !== req.user._id.toString())
+      return next(createError(403, "You do not have permission to update this blog. Only the blog owner can make changes."));
     const { title, description, tags, body } = req.body;
     if (title) blog.title = title;
     if (description) blog.description = description;
@@ -75,19 +93,25 @@ exports.updateBlog = async (req, res, next) => {
       blog.reading_time = calculateReadingTime(body);
     }
     await blog.save();
-    res.json(blog);
+    res.json({
+      success: true,
+      statusCode:200,
+      message: "Blog updated successfully!",
+      data: blog
+    });
   } catch (err) {
     next(err);
   }
 };
 
 // Publish a blog (owner only)
-exports.publishBlog = async (req, res, next) => {
+const publishBlog = async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.params.id);
-    if (!blog) return next(createError(404, 'Blog not found'));
-    if (blog.author.toString() !== req.user._id.toString()) return next(createError(403, 'Forbidden'));
-    blog.state = 'published';
+    if (!blog) return next(createError(404, "Blog not found"));
+    if (blog.author.toString() !== req.user._id.toString())
+      return next(createError(403, "Forbidden"));
+    blog.state = "published";
     await blog.save();
     res.json(blog);
   } catch (err) {
@@ -96,36 +120,44 @@ exports.publishBlog = async (req, res, next) => {
 };
 
 // Delete a blog (owner only)
-exports.deleteBlog = async (req, res, next) => {
+const deleteBlog = async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.params.id);
-    if (!blog) return next(createError(404, 'Blog not found'));
-    if (blog.author.toString() !== req.user._id.toString()) return next(createError(403, 'Forbidden'));
+    if (!blog) return next(createError(404, "Blog not found"));
+    if (blog.author.toString() !== req.user._id.toString())
+      return next(createError(403, "Forbidden"));
     await blog.deleteOne();
-    res.json({ message: 'Blog deleted' });
+    res.json({ message: "Blog deleted" });
   } catch (err) {
     next(err);
   }
 };
 
 // Get a list of the user's blogs (paginated, filterable by state)
-exports.getUserBlogs = async (req, res, next) => {
+const getUserBlogs = async (req, res, next) => {
   try {
     const filter = buildQuery(req.query);
     filter.author = req.user._id;
     const sort = buildSort(req.query);
     const { limit, skip, page } = getPagination(req.query);
-    const blogs = await Blog.find(filter)
-      .sort(sort)
-      .skip(skip)
-      .limit(limit);
+    const blogs = await Blog.find(filter).sort(sort).skip(skip).limit(limit);
     const total = await Blog.countDocuments(filter);
     res.json({
       page,
       total,
-      blogs
+      blogs,
     });
   } catch (err) {
     next(err);
   }
+};
+
+module.exports = {
+  getBlog,
+  getBlogs,
+  createBlog,
+  updateBlog,
+  publishBlog,
+  deleteBlog,
+  getUserBlogs,
 };
