@@ -30,7 +30,9 @@ const getBlogs = async (req, res, next) => {
         blogs: [],
       });
     }
-    res.json({
+     res.status(200).json({
+      success: true,
+      statusCode: 200,
       page,
       total,
       blogs,
@@ -215,17 +217,31 @@ const getUserBlogs = async (req, res, next) => {
     const blogs = await Blog.find(filter).sort(sort).skip(skip).limit(limit);
     const total = await Blog.countDocuments(filter);
     if (total < 1) {
-      return res.status(200).json({
-        success: true,
-        statusCode: 200,
-        message:
-          "You haven't created any blogs yet. Start writing your first blog!",
-        page,
-        total: 0,
-        blogs: [],
-      });
+      // Check if user has any blogs at all (ignoring state)
+      const anyBlogs = await Blog.countDocuments({ author: req.user._id });
+      if (anyBlogs > 0) {
+        return res.status(200).json({
+          success: true,
+          statusCode: 200,
+          message: "You have created blogs, but none are published yet. Publish a blog to make it visible here.",
+          page,
+          total: 0,
+          blogs: [],
+        });
+      } else {
+        return res.status(200).json({
+          success: true,
+          statusCode: 200,
+          message: "You haven't created any blogs yet. Start writing your first blog!",
+          page,
+          total: 0,
+          blogs: [],
+        });
+      }
     }
-    res.json({
+    res.status(200).json({
+      success:true,
+      statusCode:200,
       page,
       total,
       blogs,

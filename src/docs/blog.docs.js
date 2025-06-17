@@ -424,24 +424,59 @@
  * @swagger
  * /blogs/user/blogs:
  *   get:
- *     summary: Get all blogs for the logged-in user
+ *     summary: Get all blogs published by the logged-in user
  *     tags: [Blog]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *         description: Number of blogs per page
+ *       - in: query
+ *         name: state
+ *         schema:
+ *           type: string
+ *         description: Blog state (published or draft)
+ *       - in: query
+ *         name: orderBy
+ *         schema:
+ *           type: string
+ *         description: Field to order by
+ *       - in: query
+ *         name: order
+ *         schema:
+ *           type: string
+ *         description: asc or desc
  *     responses:
  *       200:
- *         description: List of user's blogs
+ *         description: List of user's blogs (or friendly message if none)
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: You haven't created any blogs yet. Start writing your first blog!
  *                 page:
  *                   type: integer
  *                   example: 1
  *                 total:
  *                   type: integer
- *                   example: 2
+ *                   example: 0
  *                 blogs:
  *                   type: array
  *                   items:

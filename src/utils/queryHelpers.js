@@ -8,6 +8,16 @@ const buildQuery = (query) => {
   return filter;
 };
 
+// // Helper for building user blog query filter (no default state)
+// const buildUserBlogsFilter = (query, userId) => {
+//   const filter = {};
+//   if (query.state) filter.state = query.state;
+//   if (query.title) filter.title = { $regex: query.title, $options: "i" };
+//   if (query.tags) filter.tags = { $in: query.tags.split(",") };
+//   filter.author = userId;
+//   return filter;
+// };
+
 const buildSort = (query) => {
   const sort = {};
   if (query.orderBy) {
@@ -32,4 +42,5 @@ module.exports = {
   buildQuery,
   buildSort,
   getPagination,
+ // buildUserBlogsFilter
 };
