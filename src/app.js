@@ -23,6 +23,10 @@ app.use(morgan('dev'));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.get('/', (req, res) => {
+  res.redirect('/api-docs');
+});
+
 // Routes
 app.get('/api/v1/', (req, res) => {
   res.status(200).json({ message: 'Welcome to the Blogging API' });
