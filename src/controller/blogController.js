@@ -19,6 +19,17 @@ const getBlogs = async (req, res, next) => {
       .limit(limit)
       .populate("author", "-password");
     const total = await Blog.countDocuments(filter);
+    if (total < 1) {
+      return res.status(200).json({
+        success: true,
+        statusCode: 200,
+        message:
+          "No blogs have been published yet. Be the first to create one!",
+        page,
+        total: 0,
+        blogs: [],
+      });
+    }
     res.json({
       page,
       total,
@@ -46,7 +57,7 @@ const getBlog = async (req, res, next) => {
     }
     blog.read_count += 1;
     await blog.save();
-    res.json(blog);
+    res.status(200).json({ success: true, statusCode: 200, blog });
   } catch (err) {
     next(err);
   }
@@ -203,6 +214,17 @@ const getUserBlogs = async (req, res, next) => {
     const { limit, skip, page } = getPagination(req.query);
     const blogs = await Blog.find(filter).sort(sort).skip(skip).limit(limit);
     const total = await Blog.countDocuments(filter);
+    if (total < 1) {
+      return res.status(200).json({
+        success: true,
+        statusCode: 200,
+        message:
+          "You haven't created any blogs yet. Start writing your first blog!",
+        page,
+        total: 0,
+        blogs: [],
+      });
+    }
     res.json({
       page,
       total,
