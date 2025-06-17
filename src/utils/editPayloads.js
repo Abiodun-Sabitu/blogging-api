@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const filePath = path.join(__dirname, 'testData', 'payload3.json');
+const filePath = path.join(__dirname, 'bulkPayload', 'payload3.json');
 
 // Read and parse the JSON file
 const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));

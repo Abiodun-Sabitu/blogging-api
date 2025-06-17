@@ -2,17 +2,14 @@
   "name": "blogging-api",
   "version": "1.0.0",
   "description": "RESTful API for a blogging platform",
+  "author": "Abiodun Sabitu",
   "keywords": [
     "blog",
-    "blogging",
-    "api",
-    "express",
-    "nodejs",
-    "mongodb",
-    "jwt",
-    "mongoose",
-    "rest",
-    "backend"
+  "blogging platform",
+  "article",
+  "content management",
+  "open source",
+  "backend development"
   ],
   "main": "server.js",
   "scripts": {

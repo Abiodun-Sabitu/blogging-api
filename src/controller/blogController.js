@@ -1,5 +1,4 @@
 const Blog = require("../model/blog");
-const User = require("../model/user");
 const createError = require("http-errors");
 const calculateReadingTime = require("../utils/readingTime");
 const {
