@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Intro to Backyard Farming",
+    "description": "Learn how to grow food at home.",
+    "body": "Start your journey by selecting the right crops for your space and climate.",
+    "state": "published"
+  },
+  {
+    "title": "Organic Composting Methods",
+    "description": "Turn kitchen waste into rich compost.",
+    "body": "Collect vegetable peels, eggshells, and yard waste in a compost bin.",
+    "state": "published"
+  },
+  {
+    "title": "No-Till Farming for Small Farms",
+    "description": "Preserve soil structure and reduce erosion.",
+    "body": "Skip the plow and use cover crops to enrich your soil instead.",
+    "state": "published"
+  },
+  {
+    "title": "How to Use Cover Crops",
+    "description": "Cover crops protect and enrich your soil.",
+    "body": "Legumes and grasses make great cover crops in the off-season.",
+    "state": "published"
+  },
+  {
+    "title": "Rainwater Harvesting Basics",
+    "description": "Collect and reuse water on your farm.",
+    "body": "Rain barrels and roof catchment systems are low-cost solutions.",
+    "state": "published"
+  },
+  {
+    "title": "Starting a Poultry Business",
+    "description": "Raise chickens for meat or eggs.",
+    "body": "Housing, feeding, and disease control are critical to your success.",
+    "state": "published"
+  },
+  {
+    "title": "Agroforestry for Beginners",
+    "description": "Integrate trees and crops.",
+    "body": "Intercropping trees helps retain moisture and fix nitrogen.",
+    "state": "published"
+  },
+  {
+    "title": "Simple Irrigation Techniques",
+    "description": "Water your crops efficiently.",
+    "body": "Drip irrigation systems use less water and reduce evaporation.",
+    "state": "published"
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Aquaponics at Home",
+    "description": "Raise fish and grow crops together.",
+    "body": "Fish waste provides nutrients for plants; plants clean the water.",
+    "state": "published"
+  },
+  {
+    "title": "Basics of Crop Rotation",
+    "description": "Boost soil health and manage pests.",
+    "body": "Avoid planting the same crop family in the same spot every season.",
+    "state": "published"
+  },
+  {
+    "title": "Beekeeping for Pollination",
+    "description": "Bees help your crops and make honey.",
+    "body": "Set up hives safely away from livestock and near flowering plants.",
+    "state": "published"
+  },
+  {
+    "title": "DIY Greenhouse Setup",
+    "description": "Grow food year-round.",
+    "body": "PVC pipes and polythene can be used to build a budget greenhouse.",
+    "state": "published"
+  },
+  {
+    "title": "How to Start Urban Farming",
+    "description": "Grow crops in small urban spaces.",
+    "body": "Use containers, rooftops, and balconies to grow fresh vegetables.",
+    "state": "published"
+  },
+  {
+    "title": "Improving Soil with Biochar",
+    "description": "Enrich poor soils using biochar.",
+    "body": "Burn organic matter in low oxygen to create stable carbon material.",
+    "state": "published"
+  },
+  {
+    "title": "Introduction to Permaculture",
+    "description": "Design your farm like an ecosystem.",
+    "body": "Observe, plan, and mimic natural relationships in your system.",
+    "state": "published"
+  },
+  {
+    "title": "Mushroom Farming Basics",
+    "description": "Low-space, high-profit farming.",
+    "body": "Use dark, humid environments and sterilized substrate for growing mushrooms.",
+    "state": "published"
+  }
+]

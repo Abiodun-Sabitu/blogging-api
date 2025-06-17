@@ -1,0 +1,50 @@
+[
+  {
+    "title": "Build a Zero-Waste Farm",
+    "description": "Turn waste into opportunity.",
+    "body": "Compost waste, recycle water, and reuse packaging materials.",
+    "state": "published"
+  },
+  {
+    "title": "Solar Power for Agriculture",
+    "description": "Run your farm on renewable energy.",
+    "body": "Install solar panels to run irrigation pumps and lighting systems.",
+    "state": "published"
+  },
+  {
+    "title": "Managing Livestock Manure",
+    "description": "Turn waste into fertilizer.",
+    "body": "Compost or dry manure to make it safe and effective for crops.",
+    "state": "published"
+  },
+  {
+    "title": "Pest Control Without Chemicals",
+    "description": "Natural ways to protect your farm.",
+    "body": "Use neem oil, diatomaceous earth, and natural predators.",
+    "state": "published"
+  },
+  {
+    "title": "How to Grow Herbs Indoors",
+    "description": "Fresh herbs at your fingertips.",
+    "body": "Basil, mint, and parsley thrive near sunny windows.",
+    "state": "published"
+  },
+  {
+    "title": "Smart Farming with Sensors",
+    "description": "Monitor your farm in real-time.",
+    "body": "Soil moisture and temperature sensors help optimize input use.",
+    "state": "published"
+  },
+  {
+    "title": "Farmer’s Guide to Market Access",
+    "description": "Find buyers and sell your produce.",
+    "body": "Explore local cooperatives, digital platforms, and urban retailers.",
+    "state": "published"
+  },
+  {
+    "title": "Using Drones for Crop Monitoring",
+    "description": "View your farm from the sky.",
+    "body": "Aerial imagery helps detect pests, water stress, and plot health.",
+    "state": "published"
+  }
+]

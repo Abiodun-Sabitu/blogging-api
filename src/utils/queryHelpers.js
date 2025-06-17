@@ -1,19 +1,19 @@
 // Helper for pagination, filtering, searching, and ordering
 const buildQuery = (query) => {
-  const filter = { state: 'published' };
+  const filter = { state: "published"};
   if (query.state) filter.state = query.state;
   if (query.author) filter.author = query.author;
-  if (query.title) filter.title = { $regex: query.title, $options: 'i' };
-  if (query.tags) filter.tags = { $in: query.tags.split(',') };
+  if (query.title) filter.title = { $regex: query.title, $options: "i" };
+  if (query.tags) filter.tags = { $in: query.tags.split(",") };
   return filter;
 };
 
 const buildSort = (query) => {
   const sort = {};
   if (query.orderBy) {
-    const fields = ['read_count', 'reading_time', 'createdAt'];
+    const fields = ["read_count", "reading_time", "createdAt"];
     if (fields.includes(query.orderBy)) {
-      sort[query.orderBy] = query.order === 'asc' ? 1 : -1;
+      sort[query.orderBy] = query.order === "asc" ? 1 : -1;
     }
   } else {
     sort.createdAt = -1;
@@ -31,5 +31,5 @@ const getPagination = (query) => {
 module.exports = {
   buildQuery,
   buildSort,
-  getPagination
-}
+  getPagination,
+};

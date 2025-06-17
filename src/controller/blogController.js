@@ -37,7 +37,14 @@ const getBlog = async (req, res, next) => {
       _id: req.params.id,
       state: "published",
     }).populate("author", "-password");
-    if (!blog) return next(createError(404, "Blog not found"));
+    if (!blog) {
+      return next(
+        createError(
+          404,
+          "Sorry, we couldn't find the blog you are looking for. It may have been deleted or is not published yet."
+        )
+      );
+    }
     blog.read_count += 1;
     await blog.save();
     res.json(blog);
@@ -50,11 +57,15 @@ const getBlog = async (req, res, next) => {
 const createBlog = async (req, res, next) => {
   try {
     const { title, description, tags, body } = req.body;
-    if (!title || !body)
+    if (!title || !body) {
       return next(createError(400, "Title and body are required"));
-    const existingTitle = await Blog.findOne({title})
-    if (existingTitle){
-      return next(createError(409, "Title already exists, please use a different title."))
+    }
+
+    const existingTitle = await Blog.findOne({ title });
+    if (existingTitle) {
+      return next(
+        createError(409, "Title already exists, please use a different title.")
+      );
     }
     const reading_time = calculateReadingTime(body);
     const blog = new Blog({
@@ -70,7 +81,7 @@ const createBlog = async (req, res, next) => {
       success: true,
       statusCode: 201,
       message: "Blog created successfully",
-      data:blog
+      data: blog,
     });
   } catch (err) {
     next(err);
@@ -81,9 +92,20 @@ const createBlog = async (req, res, next) => {
 const updateBlog = async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.params.id);
-    if (!blog)       return next(createError(404, "Sorry, we couldn't find the blog you want to update. It may have been deleted or never existed."));
+    if (!blog)
+      return next(
+        createError(
+          404,
+          "Sorry, we couldn't find the blog you want to update. It may have been deleted or never existed."
+        )
+      );
     if (blog.author.toString() !== req.user._id.toString())
-      return next(createError(403, "You do not have permission to update this blog. Only the blog owner can make changes."));
+      return next(
+        createError(
+          403,
+          "You do not have permission to update this blog. Only the blog owner can make changes."
+        )
+      );
     const { title, description, tags, body } = req.body;
     if (title) blog.title = title;
     if (description) blog.description = description;
@@ -95,9 +117,9 @@ const updateBlog = async (req, res, next) => {
     await blog.save();
     res.json({
       success: true,
-      statusCode:200,
+      statusCode: 200,
       message: "Blog updated successfully!",
-      data: blog
+      data: blog,
     });
   } catch (err) {
     next(err);
@@ -108,12 +130,35 @@ const updateBlog = async (req, res, next) => {
 const publishBlog = async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.params.id);
-    if (!blog) return next(createError(404, "Blog not found"));
-    if (blog.author.toString() !== req.user._id.toString())
-      return next(createError(403, "Forbidden"));
+    if (!blog) {
+      return next(
+        createError(
+          404,
+          "We couldn't find the blog you want to publish. It may have been deleted or never existed"
+        )
+      );
+    }
+
+    if (blog.author.toString() !== req.user._id.toString()) {
+      return next(
+        createError(
+          403,
+          "You can only publish your own blogs. Please make sure you're the owner of this blog."
+        )
+      );
+    }
+
+    if (blog.state === "published") {
+      return next(createError(400, "This blog is already published!"));
+    }
+
     blog.state = "published";
     await blog.save();
-    res.json(blog);
+    res.json({
+      success: true,
+      message: "Your blog has been published successfully!",
+      data: blog,
+    });
   } catch (err) {
     next(err);
   }
@@ -123,11 +168,28 @@ const publishBlog = async (req, res, next) => {
 const deleteBlog = async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.params.id);
-    if (!blog) return next(createError(404, "Blog not found"));
-    if (blog.author.toString() !== req.user._id.toString())
-      return next(createError(403, "Forbidden"));
+    if (!blog) {
+      return next(
+        createError(
+          404,
+          "Sorry, we couldn't find the blog you want to delete. It may have already been removed or never existed."
+        )
+      );
+    }
+    if (blog.author.toString() !== req.user._id.toString()) {
+      return next(
+        createError(
+          403,
+          "You do not have permission to delete this blog. Only the blog owner can delete it."
+        )
+      );
+    }
+
     await blog.deleteOne();
-    res.json({ message: "Blog deleted" });
+    res.json({
+      success: true,
+      message: "Blog deleted successfully!",
+    });
   } catch (err) {
     next(err);
   }
